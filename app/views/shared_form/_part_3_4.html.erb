@@ -1,0 +1,60 @@
+<%= simple_form_for object do |f| %>
+  <%= render "shared/error_messages", object: object %>
+  <table class="table-striped table">
+    <thead>
+      <tr>
+        <th class="content-column">Audio *</th>
+        <th class="correct-column">Level</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+            <%= f.file_field :audio %>
+          </td>
+          <td>
+            <%= render "shared_form/level_field", f: f %>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <%= f.fields_for :sub_questions do |sub_question_builder| %>
+    <div class="sub_questions">
+      <div class="question">
+        <%= sub_question_builder.label :content, "Question #{sub_question_builder.index + 1}" %><br />
+        <%= sub_question_builder.text_field :content, :rows => 3, class: "form-control" %><br />
+      </div>
+      <div class="sub_questions">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="option-column">Option</th>
+              <th class="content-column">Lyric/script</th>
+              <th class="correct-column">Correct?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= sub_question_builder.fields_for :options do |option_builder| %>
+              <tr>
+                <td>
+                  <%= SysConst::OPTION_TO_STRING[option_builder.index] %>
+                </td>
+                <td>
+                  <%= option_builder.text_field :content, class: "form-control option" %>
+                </td>
+                <td>
+                  <%= option_builder.check_box :correct %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+  <%= render "shared_form/explanation_field", f: f %>
+  <div class="action">
+    <%= f.submit "Submit", class: "btn btn-lg btn-primary btn-flat" %>
+  </div>
+<% end %>

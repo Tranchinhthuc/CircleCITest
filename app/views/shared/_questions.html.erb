@@ -1,0 +1,51 @@
+<table class="table-striped table">
+  <thead>
+    <tr>
+      <th>No</th>
+      <% if controller_name.singularize.in? SysConst::LISTENING_TYPES.map(&:to_s) %>
+        <th>Audio</th>
+      <% end %>
+      <% if controller_name == "part_ones" %>
+        <th>Photo</th>
+      <% end %>
+      <th>Content</th>
+      <th>Level</th>
+      <th>Point</th>
+      <th>Approved status</th>
+      <th title="Deined reason only">Reason(?)</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% questions.each_with_index do |question, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <% if controller_name.singularize.in? SysConst::LISTENING_TYPES.map(&:to_s) %>
+          <td><%= audio_tag question.audio, controls: true %></td>
+        <% end %>
+        <% if controller_name == "part_ones" %>
+          <td><%= image_tag(question.photo.thumb, size: "100x100") if question.photo %></td>
+        <% end %>
+        <td>
+          <%= question.content_s.first(100).html_safe if question.content_s %>
+        </td>
+        <td><%= question.level_s %></td>
+        <td><%= question.point %></td>
+        <td><%= question.approved_status %></td>
+        <td><%= question.note %></td>
+        <td>
+          <% if question.approved_status != "approved" %>
+            <%= link_to "Approve", admin_question_path(question, approved_status: "approved"), method: :patch %> |
+          <% else %>
+            <%= link_to "Deny", admin_question_path(question, approved_status: "denied"), method: :patch %> |
+          <% end %>
+          <%= link_to "show", [:admin, question] %> |
+          <%= link_to "edit", [:edit, :admin, question] %> |
+          <%= link_to "delete", [:admin, question], method: :delete,
+                data: { confirm: 'Are you sure?' } %> <br>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

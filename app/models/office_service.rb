@@ -1,0 +1,2 @@
+class OfficeService < ApplicationRecord
+end

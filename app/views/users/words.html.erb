@@ -1,0 +1,230 @@
+<div class="col-md-10">
+    <form class="form-inline">
+      <div class="form-group">
+        <input type="text" class="form-control required" aria-describedby="basic-addon1" data-bind='value: new_origin, uniqueName: true' placeholder="Word">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control required" aria-describedby="basic-addon1" data-bind='value: new_meaning, uniqueName: true' placeholder="Meaning">
+      </div>
+      <button data-bind='click: addWord' class="btn btn-primary btn-flat">Add word</button>
+    </form>
+      <p>
+          Filter:
+          <label><input type='radio' name="type" value='all' data-bind='checked: typeToShow' />All |</label>
+          <label><input type='radio' name="type" value='remembered' data-bind='checked: typeToShow' />Remembered |</label>
+          <label><input type='radio' name="type" value='not_remember_yet' data-bind='checked: typeToShow' />New</label>
+      </p>
+
+      <table data-bind='visible: words().length > 0' class="table">
+          <thead>
+              <tr>
+                  <th>No.</th>
+                  <th>Word</th>
+                  <th>Meaning</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody data-bind='foreach: wordsToshow'>
+            <form action='/'>
+              <tr>
+                  <td><span data-bind="text:($index() + 1)"> </span></td>
+                  <td>
+                    <div class="input-group">
+                      <input type="text" class="form-control required" data-bind='value: origin, uniqueName: true, disable: shouldDisable'>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group">
+                      <input type="text" class="form-control required" data-bind='value: meaning, uniqueName: true, disable: shouldDisable, visible: shouldVisible'>
+                      <a href="#" data-bind='click: showMeaning, visible: showShouldVisible'>Show</a>
+                    </div>
+                  </td>
+
+                  <td>
+                      <button data-bind='click: editable, html: editIcon, disable: updateIconShouldDisable' class="btn btn-success">
+                      </button>
+                      <a href='#' data-bind='click: $root.removeWord, visible: deleteShouldVisible' class="btn btn-danger">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </a>
+                      <a href='#' data-bind='click: updateStatus' class="btn btn-success">
+                        <span data-bind='text: status_s, uniqueName: true, disable: shouldDisable'></span>
+                      </a>
+                  </td>
+              </tr>
+            </form>
+
+          </tbody>
+      </table>
+
+
+</div>
+<script type="text/javascript">
+
+
+  var word = function(origin, meaning, deleteShouldVisible, id, status) {
+      var self = this;
+      self.id = id;
+      self.origin = ko.observable(origin);
+      self.meaning = ko.observable(meaning);
+      self.editIcon = ko.observable('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>');
+      self.status = ko.observable(status);
+      self.shouldVisible = ko.observable(status == "not_remember_yet");
+      self.showShouldVisible = ko.observable(!self.shouldVisible());
+      self.status_s = ko.observable((status == "remembered") ? "Mark as new word" : "Mark as remembered word");
+
+      self.shouldDisable = ko.observable(origin.length > 0 || meaning.length > 0);
+      self.updateIconShouldDisable = ko.observable(false);
+
+      self.showMeaning = function() {
+        self.shouldVisible(true);
+        self.showShouldVisible(false);
+      };
+
+      self.updateStatus = function() {
+        if(self.status() == "remembered"){
+          self.status_s("Mark as remembered word");
+          self.status("not_remember_yet");
+        } else {
+          self.status_s("Mark as new word");
+          self.status("remembered");
+        }
+        self.shouldVisible(self.status() == "not_remember_yet");
+        self.showShouldVisible(!self.shouldVisible());
+        $.ajax({
+            url: "/words/" + self.id + "/update_status",
+            type: 'POST',
+            dataType: 'json',
+            headers: {"X-HTTP-Method-Override": "PUT"},
+            data: {"status": self.status()},
+            success: function(result) {
+              // console.log(status);
+            }
+        });
+      };
+
+      self.editable = function() {
+        self.shouldDisable(!(self.shouldDisable()));
+        if (self.shouldDisable()) {
+          self.editIcon('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>');
+          $.ajax({
+              url: "/words/" + self.id,
+              type: 'POST',
+              dataType: 'json',
+              headers: {"X-HTTP-Method-Override": "PUT"},
+              data: {"word":{"meaning": self.meaning, "origin": self.origin }},
+              success: function(result) {
+                console.log("updated");
+              }
+          });
+        } else {
+          self.editIcon('<i class="fa fa-check" aria-hidden="true"></i>');
+        }
+      };
+      self.deleteShouldVisible = ko.observable(deleteShouldVisible);
+  };
+
+  var words = function(words) {
+      var self = this;
+      self.words = ko.observableArray(words);
+      self.new_origin = ko.observableArray();
+      self.new_meaning = ko.observableArray();
+      self.typeToShow = ko.observable("all");
+
+      self.wordsToshow = ko.pureComputed(function() {
+          // Represents a filtered list of planets
+          // i.e., only those matching the "typeToShow" condition
+          var desiredStatus = self.typeToShow();
+          if (desiredStatus == "all") return self.words();
+          return ko.utils.arrayFilter(self.words(), function(word) {
+              console.log(word.status());
+              return word.status() == desiredStatus;
+          });
+      }, self);
+
+      self.removeWord = function(word) {
+        console.log(word);
+        $.ajax({
+            url: "/words/" + word.id,
+            type: 'DELETE',
+            success: function(result) {
+              console.log("Deleted");
+              self.words.remove(word);
+            }
+        });
+      };
+
+      self.save = function(form) {
+          alert("Could now transmit to server: " + ko.utils.stringifyJson(self.words));
+      };
+
+      self.addWord = function() {
+        $.post( "/words", { word: {origin: self.new_origin, meaning: self.new_meaning, status: "not_remember_yet" }} )
+          .done(function( data ) {
+            self.words.unshift(new word(data.origin, data.meaning, true, data.id, data.status));
+            self.new_origin("");
+            self.new_meaning("");
+          });
+      };
+  };
+
+  // console.log(data_words.length);
+  $.getJSON("/words", function(data) {
+    var data_words = [];
+    for (i = 0; i < data.length; i++) {
+      data_words.push(new word(data[i].origin, data[i].meaning, true, data[i].id, data[i].status));
+    }
+    // data_words.push(new word("", "", false, 0));
+
+    ko.applyBindings(new words(data_words));
+  })
+</script>
+
+<!-- <p>
+    Show:
+    <label><input type='radio' name="type" value='all' data-bind='checked: typeToShow' />All</label>
+    <label><input type='radio' name="type" value='rock' data-bind='checked: typeToShow' />Rocky planets</label>
+    <label><input type='radio' name="type" value='gasgiant' data-bind='checked: typeToShow' />Gas giants</label>
+</p>
+
+<div data-bind='template: { foreach: planetsToShow,
+                            beforeRemove: hidePlanetElement,
+                            afterAdd: showPlanetElement }'>
+    <div data-bind='attr: { "class": "planet " + type }, text: name'> </div>
+</div>
+
+
+<script type="text/javascript">
+  var PlanetsModel = function() {
+      this.planets = ko.observableArray([
+          { name: "Mercury", type: "rock"},
+          { name: "Venus", type: "rock"},
+          { name: "Earth", type: "rock"},
+          { name: "Mars", type: "rock"},
+          { name: "Jupiter", type: "gasgiant"},
+          { name: "Saturn", type: "gasgiant"},
+          { name: "Uranus", type: "gasgiant"},
+          { name: "Neptune", type: "gasgiant"}
+      ]);
+
+      this.typeToShow = ko.observable("all");
+
+      this.planetsToShow = ko.pureComputed(function() {
+          // Represents a filtered list of planets
+          // i.e., only those matching the "typeToShow" condition
+          var desiredType = this.typeToShow();
+          if (desiredType == "all") return this.planets();
+          return ko.utils.arrayFilter(this.planets(), function(planet) {
+              return planet.type == desiredType;
+          });
+      }, this);
+
+      // Animation callbacks for the planets list
+      this.showPlanetElement = function(elem) { if (elem.nodeType === 1) $(elem).hide().slideDown() }
+      this.hidePlanetElement = function(elem) { if (elem.nodeType === 1) $(elem).slideUp(function() {
+        $(elem).remove();
+      }) }
+  };
+
+
+  ko.applyBindings(new PlanetsModel());
+</script> -->

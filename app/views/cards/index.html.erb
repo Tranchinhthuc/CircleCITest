@@ -1,0 +1,26 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Type</th>
+      <th>Pin</th>
+      <th>Serial</th>
+      <th>Money</th>
+      <th>Status</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cards.each do |card| %>
+      <tr>
+        <td><%= card.user.email %></td>
+        <td><%= card.card_type %></td>
+        <td><%= card.pin %></td>
+        <td><%= card.serial %></td>
+        <td><%= card.money %></td>
+        <td><%= card.status %></td>
+        <td><%= card.created_at.strftime('%r - %x') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

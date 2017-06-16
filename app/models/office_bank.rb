@@ -1,0 +1,2 @@
+class OfficeBank < ApplicationRecord
+end

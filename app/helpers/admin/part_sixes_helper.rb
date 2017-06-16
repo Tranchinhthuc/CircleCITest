@@ -1,0 +1,2 @@
+module Admin::PartSixesHelper
+end

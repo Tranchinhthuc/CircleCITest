@@ -1,0 +1,2 @@
+class OfficeDistrict < ApplicationRecord
+end

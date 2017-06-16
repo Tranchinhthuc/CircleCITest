@@ -1,0 +1,14 @@
+<% if controller_name.in?(SysConst::TABLE_NAME + SysConst::LESSON_TYPES.map(&:to_s)) && !action_name.in?(["new", "create"]) %>
+  <% name = controller_name.include?("lesson") ? controller_name.singularize.gsub("_lesson", "").pluralize : controller_name %>
+  <div class="page-tabs">
+    <ul class="nav nav-pills">
+        <li class="<%= (controller_name.include?('lessons') && action_name == 'index') ? 'active' : '' %>">
+          <%= link_to "Lessons", Rails.application.routes.url_helpers.send("#{name.singularize}_lessons_path") %>
+        </li>
+        <li class="<%= (!controller_name.include?('lessons') && action_name == 'index') ? 'active' : '' %>">
+          <%= link_to "Câu hỏi đã chia sẻ", Rails.application.routes.url_helpers.send("#{name}_path") %>
+        </li>
+    </ul>
+  </div>
+  <%= link_to "Chia sẻ câu hỏi của bạn", [:new, singulize_model_name(name).to_sym], class: "btn btn-primary pull-right contribute-button" %>
+<% end %>

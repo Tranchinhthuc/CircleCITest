@@ -1,0 +1,32 @@
+<%= render "shared/page_title", title: "#{SysConst::QUESTION_TYPE_TO_STRING_1[controller_name.gsub("_lessons", "").to_sym]} lessons" %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Lessons</th>
+      <th>Questions</th>
+      <th>Point</th>
+      <th>Views</th>
+      <th>Action</th>
+      <!-- <th>Rate</th> -->
+      <!-- <th>Best score</th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <% examinations.each do |examination| %>
+        <tr>
+          <td>Lesson <%= examination.id %></td>
+          <td><%= examination.total_of_question %></td>
+          <td><%= examination.point_s %></td>
+          <td><%= examination.views %></td>
+          <td>
+            <% if current_user.bought_examination?(examination) %>
+              <%= link_to "Test Now!", new_examination_answer_sheet_path(examination), class: "btn btn-primary btn-flat" %>
+            <% else %>
+              <%= link_to "Buy now!", buy_examination_examination_path(examination, redirect: false), method: :post, class: "btn btn-primary btn-flat" %>
+              <%= link_to "Buy and test now!", buy_examination_examination_path(examination, redirect: true), method: :post, class: "btn btn-primary btn-flat" %>
+            <% end %>
+          </td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>

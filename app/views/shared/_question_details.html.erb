@@ -1,0 +1,23 @@
+<div class="box-with-border">
+  <div class="field">
+    <b>Content: </b>
+    <%if question.class.name.underscore.to_sym.in? SysConst::LISTENING_TYPES %>
+      <p><%= audio_tag(question.audio, controls: true) %></p>
+    <% else %>
+      <p><%= question.content.try(:html_safe) %></p>
+    <% end %>
+  </div>
+  <% question.sub_questions.each_with_index do |sub_question, index| %>
+      <div class="sub_questions">
+        <b><%= "Question #{index + 1}" %></b>.
+        <p><%= sub_question.content.try(:html_safe) %></p>
+        <% sub_question.options.each_with_index do |option, index| %>
+          <div class="<%= option.correct ? 'correct-option' : 'wrong-option' %> question-option">
+            <p><%= SysConst::OPTION_TO_STRING[index] %>. <%= option.content %></p>
+          </div>
+        <% end %>
+      </div>
+  <% end %>
+  <b>Explanation: </b>
+  <p><%= question.explanation.html_safe %></p>
+</div>
