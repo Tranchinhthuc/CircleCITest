@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-md-3">
+    <% @chat_rooms.each do |chat_room| %>
+      <div class="sidebar-name">
+          <a href="javascript:load_messages('messages-<%= chat_room.id %>', '<%= chat_room.get_user_names(current_user) %>');" class="no-underline">
+
+            <%= image_tag((chat_room.users - [current_user]).first.avatar_url(:comment_avatar)) %>
+            <span><%= chat_room.get_user_names(current_user) %></span>
+          </a>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-9">
+    <div id="messages-area"></div>
+  </div>
+</div>

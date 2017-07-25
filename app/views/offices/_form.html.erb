@@ -1,0 +1,65 @@
+<div class="form-group">
+  <label class="control-label col-sm-2">Tên văn phòng:</label>
+  <div class="col-sm-10">
+    <%= f.text_field :name, :required => true, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="control-label col-sm-2">Ảnh đại diện:</label>
+  <div class="col-sm-10">
+    <%= f.file_field :cover_picture, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group"">
+  <label class="control-label col-sm-2">Mô tả:</label>
+  <div class="col-sm-10" style="margin-bottom: 20px;">
+    <%= f.cktext_area :description, :required => true %>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="control-label col-sm-2">Ngân hàng:</label>
+  <div class="col-sm-10">
+    <%= f.collection_check_boxes(:bank_ids, Bank.all, :id, :name) do |b| %>
+      <%= b.label(class: "check_box") { b.check_box(class: "check_box checkbox-jquery-ui") + b.text }  %>
+    <% end %>
+  </div>
+</div>
+
+<% city = @office.city.present? ? @office.city : get_city_id_from(params[:city]) %>
+<div class="form-group">
+  <label class="control-label col-sm-2">Tỉnh/Thành phố:</label>
+  <div class="col-sm-10">
+    <%= f.select(:city_id, City.all.collect {|c| [c.name, c.id]}, {:selected => city.id}, {:class => "form-control jquery-ui-combobox"} ) %>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="control-label col-sm-2">Quận/Huyện:</label>
+  <div class="col-sm-10">
+    <fieldset class="well the-fieldset" id="districts">
+    </fieldset>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="control-label col-sm-2">Dịch vụ:</label>
+  <div class="col-sm-10">
+    <%= f.collection_check_boxes(:service_ids, Service.all, :id, :name) do |b| %>
+      <%= b.label(class: "check_box") { b.check_box(class: "check_box checkbox-jquery-ui") + b.text }  %>
+    <% end %>
+  </div>
+</div>
+
+<input id="district_ids_js" type="text" name="district_ids_js" value="<%= @district_ids %>" style="display: none;" >
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+      var district_ids = <%= @district_ids %>;
+      if ($("#office_city_id").val()) {
+        filter_districts_by_city($("#office_city_id").val(), district_ids);
+      }
+  });
+</script>

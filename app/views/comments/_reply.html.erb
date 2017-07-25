@@ -1,0 +1,15 @@
+<div class="reply-box row" id="comment-box-<%= reply.id %>">
+  <div class="col-md-1">
+    <%= link_to image_tag(reply.user.avatar_url(:comment_avatar)), "#" %>
+  </div>
+
+  <div>
+    <%= link_to reply.user_name, "#" %>
+    <%= reply.content %>
+    <div class="text-muted smaller-font">
+      <%#= link_to "Edit", "#" %>
+      <%= link_to("Xóa", office_comment_path(@office, reply), method: :delete, data: {confirm: "Are you sure?"}, remote: true) if reply.user == current_user %>
+      <%= time_ago_in_words(reply.created_at) %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="panel panel-primary messages-box" style="border:0px">
+  <% if @chat_room.messages.any? %>
+    <div class="panel-body" id="messages-<%= @chat_room.id %>">
+      <% messages.each.with_index do |message, index| %>
+        <% base_type_message = (current_user == message.user) ? "base_sent" : "base_receive" %>
+        <% type_message = (current_user == message.user) ? "msg_receive" : "msg_sent" %>
+        <div class="row msg_container <%= base_type_message %>">
+            <div class="col-md-10 col-xs-10">
+                <div class="messages <%= type_message %>">
+                    <p class="paragraph-<%= type_message %> <%= type_message == 'msg_receive' ? 'pull-right' : '' %>">
+                      <% if type_message == "msg_sent" %>
+                        <%= image_tag(message.user.avatar_url(:comment_avatar), class: "circle-img") %>
+                      <% end %>
+                      <span><%= message.content %></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="panel-body" id="messages-<%= @chat_room.id %>">
+      Nothing message before
+    </div>
+  <% end %>
+</div>

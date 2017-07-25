@@ -1,0 +1,116 @@
+/*
+ * Start Bootstrap - Heroic Features (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+body {
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+.hero-spacer {
+    margin-top: 50px;
+}
+
+.hero-feature {
+    margin-bottom: 30px;
+}
+
+footer {
+    margin: 50px 0;
+}
+
+.office-box{
+  height: auto;
+}
+.thumbnail{
+  border-left: 5px solid #007fff !important;
+  border-bottom: 2px solid #007fff !important;
+}
+
+.office-cover-picture{
+  border-bottom: 1px solid #007fff;
+}
+
+.office-cover-picture {
+  height: 160px;
+}
+
+.office-cover-picture img{
+  height: 100%;
+  width: 100%;
+}
+
+.title-label {
+  background-color: #007fff;
+  color: white;
+  padding: 10px;
+}
+
+.row.text-center {
+  margin-top: 20px;
+}
+
+.navbar-inverse {
+  background-color: #007FFF !important;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff7f7 !important;
+    font-weight: bold !important;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff7f7 !important;
+    font-weight: bold !important;
+}
+
+
+.navbar-inverse .navbar-nav > li > a:hover {
+    /*color: black !important;*/
+    font-weight: bold !important;
+    background-color: #39c3ca !important;
+}
+
+header.jumbotron.hero-spacer{
+  border: 1px solid #007fff;
+}
+
+div.row.office-general-info hr{
+  border-bottom: 1px solid #007fff;
+  width: 97%;
+}
+
+li.dropdown{
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+.comment-box{
+  margin-bottom: 10px;
+  margin-top: 10px;
+  /*border-bottom: 1px solid #007fff;*/
+  border-left: 1px solid #007fff;
+}
+
+.replies {
+  margin-top: 20px;
+}
+
+.smaller-font {
+  font-size: 12px;
+}
+
+.reply-box{
+  margin-bottom: 10px;
+}
+
+.star{
+  display: inline;
+}
+
+.messages-box{
+  height: 400px;
+  overflow: scroll;
+}

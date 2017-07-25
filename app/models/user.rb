@@ -13,6 +13,19 @@ class User < ApplicationRecord
     normal: 2
   }
 
+  has_one :office, dependent: :destroy
+  has_many :registration
+  has_many :comments, dependent: :destroy
+  has_many :messages
+
+  has_many :chat_rooms, through: :chat_room_users
+  has_many :chat_room_users
+
+  validates :avatar, presence: true
+  validates :full_name, presence: true
+
+  ratyrate_rater
+
   def admin?
     role == "admin"
   end

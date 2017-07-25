@@ -1,0 +1,28 @@
+<div id="menu1" class="tab-pane fade">
+  <h3>Danh sách khách hàng</h3>
+
+  <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Tên</th>
+          <th>Tiêu đề</th>
+          <th>Nội dung</th>
+          <th>Ngày đăng ký</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <% @registrations.each do |registration| %>
+          <tr>
+            <td><%= registration.name %></td>
+            <td><%= registration.title %></td>
+            <td><%= registration.message.html_safe %></td>
+            <td><%= registration.created_at.strftime('%r - %x') %></td>
+            <td><%= link_to "Delete", office_registration_path(@office, registration), method: :delete, data: {:confirm => 'Are you sure?'}  %></td>
+          </tr>
+        <% end %>
+
+      </tbody>
+    </table>
+</div>

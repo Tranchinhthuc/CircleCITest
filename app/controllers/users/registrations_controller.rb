@@ -5,7 +5,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create
     @user = User.new(user_params)
-    # @user.point = 3900
     if @user.save
       flash[:success] = "Sign up completed!"
       sign_in_and_redirect @user
@@ -28,6 +27,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :full_name)
+    params.require(:user).permit(:email, :password, :password_confirmation, :full_name, :avatar)
   end
 end

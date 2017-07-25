@@ -1,0 +1,36 @@
+<li class="comment-box" id="item-comment-box-<%= comment.id %>">
+    <div class="row" id="comment-box-<%= comment.id %>">
+      <div class="col-md-1">
+        <%= link_to image_tag(comment.user.avatar_url(:comment_avatar)), "#" %>
+      </div>
+
+      <div>
+        <%= link_to comment.user_name, "#" %>
+        <%= comment.content %>
+        <div class="text-muted row smaller-font">
+          <%#= link_to "Edit", "#" %>
+          <%= link_to("Xóa", office_comment_path(@office, comment), method: :delete, data: {confirm: "Are you sure?"}, remote: true) if comment.user == current_user %>
+          <%= time_ago_in_words(comment.created_at) %>
+        </div>
+      </div>
+    </div>
+
+    <div class="replies col-sm-12 col-md-offset-1" id="replies-box-<%= comment.id %>">
+      <% comment.replies.each do |reply| %>
+        <%= render "comments/reply", reply: reply %>
+      <% end %>
+    </div>
+
+    <div class="row">
+      <% if user_signed_in? %>
+        <%= form_for [@office, Comment.new], remote: true do |f| %>
+          <%= f.hidden_field :parent_id, value: comment.id %>
+          <div class="form-group">
+            <div class="col-sm-8 col-md-offset-1">
+              <%= f.text_field :content, :required => true, class: "form-control", placeholder: "Reply here...", id: "comment_content_#{comment.id}" %>
+            </div>
+          </div>
+        <% end %>
+      <% end%>
+    </div>
+</li>

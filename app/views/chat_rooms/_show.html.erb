@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-3">
+    <ul>
+    <% @chat_rooms.each do |chat_room| %>
+      <li><%= link_to chat_room.get_user_names(current_user), chat_room_path(chat_room) %></li>
+    <% end %>
+    </ul>
+  </div>
+
+  <div class="col-md-9">
+    <h1>Messages</h1>
+
+    <div class="panel panel-default messages-box">
+      <% if @chat_room.messages.any? %>
+        <div class="panel-body" id="messages-<%= @chat_room.id %>">
+          <%= render 'messages/message', messages: @messages %>
+        </div>
+      <% else %>
+        <div class="panel-body" id="messages-<%= @chat_room.id %>">
+          Nothing message before
+        </div>
+      <% end %>
+    </div>
+    <%= render partial: 'messages/message_form', locals: {message: @message, chat_room: @chat_room}%>
+
+  </div>
+</div>

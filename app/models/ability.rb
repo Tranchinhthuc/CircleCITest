@@ -8,19 +8,11 @@ class Ability
       if user.admin?
         can :manage, :all
       elsif user.normal?
-        can :create, AnswerSheet do
-          !user.new_record?
-        end
-        can [:read], AnswerSheet do |answer_sheet|
-          answer_sheet.examinee == user
+        can [:read], ChatRoom do |chat_room|
+          chat_room.users.include?(user)
         end
 
-        can :create, Question
-        can :read, Question do |question|
-          question.creator == user
-        end
-
-        can :read, Document
+        can :create, ChatRoom
       end
     #
     # The first argument to `can` is the action you are giving the user

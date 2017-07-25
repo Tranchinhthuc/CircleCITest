@@ -1,0 +1,27 @@
+<div class="row office-general-info">
+  <div class="col-md-3">
+    <%= image_tag(office.cover_picture.url(:thumb), size: "180x180") if office.cover_picture.present? %>
+  </div>
+
+  <div class="col-md-9">
+    <p><b>Tên văn phòng:</b> <%= office.name %></p>
+    <p><b>Chủ văn phòng:</b> <%= office.user.full_name %></p>
+    <p><b>Ngân hàng:</b> <%= office.banks.map(&:name).join(", ") %></p>
+    <p><b>Dịch vụ:</b> <%= office.services.map(&:name).join(", ") %></p>
+    <p><b>Quận/Huyện:</b> <%= office.districts.map(&:name).join(", ") %></p>
+    <p>
+      <%= rating_for office, "quality", star: 5, disable_after_rate: true %>
+      <span>(<%= office.rates("quality").count %>)</span>
+    </p>
+    <p>
+      <% if office.is_belongs_to_user?(current_user.try(:id)) %>
+        <%= link_to "Sửa", edit_office_path(office), class: "btn btn-primary" %>
+      <% else %>
+        <%= link_to "Đăng ký ngay!", new_office_registration_path(office), class: "btn btn-primary" %>
+      <% end %>
+      <%= (link_to "Gửi tin nhắn", chat_rooms_path(office_id: office.id), method: :post, class: "btn btn-primary", target: "_blank") if(params[:action] == "index" && current_user != office.user) %>
+      <%= (link_to "Xem chi tiết", office_path(office), class: "btn btn-default", target: "_blank") if params[:action] == "index" %>
+    </p>
+  </div>
+  <hr>
+</div>

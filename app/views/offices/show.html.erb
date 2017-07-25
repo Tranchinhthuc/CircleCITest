@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <h3 class="title-label">Thông tin cơ bản</h3>
+    </div>
+</div>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <%= render "office_general_info", office: @office %>
+
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#description">Mô tả</a></li>
+          <% if @office.is_belongs_to_user?(current_user.try(:id)) %>
+            <li><a data-toggle="tab" href="#menu1">Danh sách khách hàng</a></li>
+          <% end %>
+          <li><a data-toggle="tab" href="#office-comments">Nhận xét</a></li>
+        </ul>
+        <div class="tab-content">
+          <%= render "office_description" %>
+          <%= render "list_registration" if @office.is_belongs_to_user?(current_user.try(:id)) %>
+          <%= render "office_comments" %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

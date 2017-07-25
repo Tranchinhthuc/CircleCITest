@@ -1,24 +1,23 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <h2>Đăng ký</h2>
 
-    <div class="row">
-      <div class="col-md-12">
-        <h2>Sign up</h2>
-
-        <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-          <%= f.error_notification %>
-          <div class="form-inputs">
-            <%= f.input :full_name, required: true, autofocus: true %>
-            <%= f.input :email, required: true, autofocus: true %>
-            <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
-            <%= f.input :password_confirmation, required: true %>
-          </div>
-
-          <div class="form-actions">
-            <%= f.button :submit, "Sign up", class: "btn btn-success" %>
-            <%= link_to "Sign in with Facebook", omniauth_authorize_path(:user, "facebook"),
-              class: "btn btn-primary" %>
-          </div>
-        <% end %>
-
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= f.error_notification %>
+      <div class="form-inputs">
+        <%= f.input :full_name, required: true, autofocus: true, label: "Họ Tên" %>
+        <%= f.input :avatar, required: true, label: "Ảnh đại diện" %>
+        <%= f.input :email, required: true, autofocus: true %>
+        <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), label: "Mật khẩu" %>
+        <%= f.input :password_confirmation, required: true, label: "Xác nhận mật khẩu" %>
       </div>
-    </div>
 
+      <div class="form-actions">
+        <%= f.button :submit, "Đăng ký", class: "btn btn-success" %>
+        <%= link_to "Đăng nhập bằng Facebook", omniauth_authorize_path(:user, "facebook"),
+          class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

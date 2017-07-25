@@ -1,0 +1,9 @@
+<ul>
+  <% @registrations.each do |registration| %>
+    <li>
+      <%= registration.name %>
+      <%= registration.message.html_safe %>
+      <%= link_to "Delete", office_registration_path(@office, registration), method: :delete, data: {confirm: "Are you sure?"} %>
+    </li>
+  <% end %>
+</ul>

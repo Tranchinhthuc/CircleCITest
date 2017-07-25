@@ -1,0 +1,8 @@
+<% if @comment.parent_id.present? %>
+  <% replies_box = "#replies-box-#{@comment.parent_id}" %>
+  $("<%= escape_javascript(render('comments/reply', reply: @comment)) %>").appendTo("<%= replies_box %>");
+  $("#comment_content_<%= @comment.parent_id %>").val("");
+<% else %>
+  $(".comment-box").first().prepend("<%= escape_javascript(render('comments/comment', comment: @comment)) %>");
+  $("#root_comment_content").val("");
+<% end %>

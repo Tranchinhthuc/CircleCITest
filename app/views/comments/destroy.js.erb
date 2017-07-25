@@ -1,0 +1,8 @@
+$("#item-comment-box-<%= @comment.id %>").remove();
+$("#comment-box-<%= @comment.id %>").remove();
+
+<% if @comment.is_root? %>
+  <% replies_box = "#replies-box-#{@comment.id}" %>
+  $("<%= replies_box %>").remove();
+  $("#comment_content_<%= @comment.id %>").remove();
+<% end %>

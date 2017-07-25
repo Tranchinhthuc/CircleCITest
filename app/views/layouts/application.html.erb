@@ -1,56 +1,38 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>The Bank</title>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css"
-          href="https://fonts.googleapis.com/css?family=Abhaya Libre">
-    <%= csrf_meta_tags %>
+<html lang="en">
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <style>
-      body {
-        font-family: 'Taviraj', serif;
-        font-size: 15px;
-      }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <!-- <title>Tài Chính 360</title> -->
+  <title>xyz</title>
+  <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-  <body>
-    <div class="wrapper">
-        <div class="container">
-<!--
-            <section class="content">
-              <%# if notice %>
-                <div class="alert alert-success alert-dismissable">
-                  <i class="fa fa-check"></i>
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <b><%#= notice %></b>
-                </div>
-              <% #end %>
+  <%= csrf_meta_tags %>
 
-              <% #if alert %>
-                <div class="alert alert-danger alert-dismissable">
-                  <i class="fa fa-ban"></i>
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <b><%#= alert %></b>
-                </div>
-              <%# end %>
-            </section> -->
-            <%= yield %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
-        </div>
 
-        <div class="container">
-          <div class="row footer">
-            <div class="col-md-12">
-              <%= render "shared/footer" %>
-            </div>
-          </div>
-        </div>
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- <link href="css/heroic-features.css" rel="stylesheet"> -->
+
+</head>
+
+<body>
+    <!-- Navigation -->
+    <%= render "shared/header" %>
+
+    <!-- Page Content -->
+    <div class="container">
+      <%= yield %>
+
+      <%= render "shared/footer" %>
+
     </div>
-  </body>
+</body>
+
 </html>
