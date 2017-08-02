@@ -6,7 +6,7 @@ gem 'rails', '~> 5.0.0'
 # Use sqlite3 as the database for Active Record
 # Use Puma as the app server
 gem 'mysql2'
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.4.0'
 # Use SCSS for stylesheets
 gem 'summernote-rails'
 gem 'bootstrap-sass'
@@ -67,3 +67,4 @@ gem "ckeditor"
 # gem 'cloudinary'
 gem 'jquery-ui-rails'
 gem "ratyrate"
+gem "rubocop"

@@ -3,39 +3,32 @@ machine:
     Asia/Tokyo
   ruby:
     version: 2.4.0
-  python:
-    version: 2.7.3
-  services:
-    - docker
 
 dependencies:
   cache_directories:
-    - "~/docker"
     - "vendor/bundle"
   override:
-    - sudo apt-get install jq && pip install awscli
-    - ./script/docker-build-push.sh
-    - bundle -j4 --path=vendor/bundle
     - bundle
 
 database:
-  override:
-    - mv config/database.ci.yml config/database.yml
-    - bundle exec rake db:create db:schema:load --trace
+  post:
+    - echo "Created"
 
 test:
   override:
-    - bundle exec rspec ./spec/models
+    - echo "Tested"
+  post:
+    - bundle exec rubocop --config ./rubocop.yml
 
 deployment:
   staging:
     branch: staging
     commands:
-      - ./script/ecs-deploy/ecs-deploy -c strong-career-staging -n strong-career-staging -i 946344263380.dkr.ecr.ap-northeast-1.amazonaws.com/strong-career-staging:latest -k AwsUserId -s AwsUserPassWord -r ap-northeast-1 -t 600 && ./script/slack-deploy-notify.sh
+      - echo "Staging"
   production:
     branch: master
     commands:
-      - ./script/ecs-deploy/ecs-deploy -c strong-career-production -n strong-career-production -i 946344263380.dkr.ecr.ap-northeast-1.amazonaws.com/strong-career-master:latest -k UserId -s UserPassWord -r ap-northeast-1 -t 600 && ./script/slack-deploy-notify.sh
+      - echo "Master"
 
 # notify:
 #   webhooks:
